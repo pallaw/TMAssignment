@@ -1,13 +1,12 @@
 package com.pallaw.tmassignment.Data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.pallaw.tmassignment.R;
@@ -36,9 +35,9 @@ public class DataManager {
     public static final String HEADER_PRAGMA = "Pragma";
     private static final String TAG = DataManager.class.getSimpleName();
     private ApiServices apiServices;
-    private AppCompatActivity mContext;
+    private Activity mContext;
 
-    public DataManager(AppCompatActivity mContext) {
+    public DataManager(Activity mContext) {
         this.mContext = mContext;
 
         init();

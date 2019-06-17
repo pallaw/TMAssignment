@@ -1,6 +1,4 @@
-package com.pallaw.tmassignment.UI.Main;
-
-import android.widget.Toast;
+package com.pallaw.tmassignment.UI.Gallary;
 
 import com.pallaw.tmassignment.Data.DataManager;
 import com.pallaw.tmassignment.Data.Models.TMResponse;
@@ -14,11 +12,11 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by Pallaw Pathak on 2019-06-14. - https://www.linkedin.com/in/pallaw-pathak-a6a324a1/
  */
-public class MainPresenter implements MainContract.Presenter {
-    private MainContract.View view;
+public class GalleryPresenter implements GalleryContract.Presenter {
+    private GalleryContract.View view;
     private DataManager dataManager;
 
-    public MainPresenter(MainContract.View view, DataManager dataManager) {
+    public GalleryPresenter(GalleryContract.View view, DataManager dataManager) {
         this.view = view;
         this.dataManager = dataManager;
     }
@@ -38,7 +36,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onNext(TMResponse tmResponse) {
-
+                        view.showData(tmResponse);
                     }
 
                     @Override
