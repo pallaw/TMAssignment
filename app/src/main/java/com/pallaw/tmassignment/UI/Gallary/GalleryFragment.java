@@ -20,6 +20,8 @@ import com.pallaw.tmassignment.Data.Models.CompatibilityQuestionsBean;
 import com.pallaw.tmassignment.Data.Models.TMResponse;
 import com.pallaw.tmassignment.R;
 import com.pallaw.tmassignment.Util.CarouselLayoutManager;
+import com.pallaw.tmassignment.Util.GridSpacingItemDecoration;
+import com.pallaw.tmassignment.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
     private void initList() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         galleryRecyclerViewAdapter = new GalleryRecyclerViewAdapter(getActivity(), compatibilityQuestions, DisplayMode.LIST);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, Util.dpToPx(getActivity(), 10), true));
         recyclerView.setAdapter(galleryRecyclerViewAdapter);
     }
 
