@@ -10,17 +10,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.pallaw.tmassignment.Data.DataManager;
 import com.pallaw.tmassignment.Data.Models.CompatibilityQuestionsBean;
 import com.pallaw.tmassignment.Data.Models.TMResponse;
 import com.pallaw.tmassignment.R;
 import com.pallaw.tmassignment.Util.CarouselLayoutManager;
-import com.pallaw.tmassignment.Util.GridSpacingItemDecoration;
+import com.pallaw.tmassignment.Util.SpacingItemDecoration;
 import com.pallaw.tmassignment.Util.Util;
 
 import java.util.ArrayList;
@@ -33,6 +33,9 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
     private RecyclerView recyclerView;
     List<CompatibilityQuestionsBean> compatibilityQuestions = new ArrayList<>();
     private GalleryRecyclerViewAdapter galleryRecyclerViewAdapter;
+    private SpacingItemDecoration listDecorator;
+    private SpacingItemDecoration gridDecorator;
+    private PagerSnapHelper carouselSnapHelper;
 
 
     public GalleryFragment() {
@@ -58,7 +61,11 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
         DataManager dataManager = new DataManager(getActivity());
         presenter = new GalleryPresenter(GalleryFragment.this, dataManager);
 
-        //initialize recyclerview with empty list
+        listDecorator = new SpacingItemDecoration(1, Util.dpToPx(getActivity(), 10), true);
+        gridDecorator = new SpacingItemDecoration(2, Util.dpToPx(getActivity(), 10), true);
+        carouselSnapHelper = new PagerSnapHelper();
+
+        //initialize recyclerView with empty list
         initList();
         
         //Download data from server
@@ -70,8 +77,28 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
     private void initList() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         galleryRecyclerViewAdapter = new GalleryRecyclerViewAdapter(getActivity(), compatibilityQuestions, DisplayMode.LIST);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, Util.dpToPx(getActivity(), 10), true));
+        setDecorator(DisplayMode.LIST);
         recyclerView.setAdapter(galleryRecyclerViewAdapter);
+    }
+
+    private void setDecorator(DisplayMode displayMode) {
+        // reset all decorators and snap helpers
+        recyclerView.removeItemDecoration(listDecorator);
+        recyclerView.removeItemDecoration(gridDecorator);
+        carouselSnapHelper.attachToRecyclerView(null);
+
+        switch (displayMode) {
+            case LIST:
+                recyclerView.addItemDecoration(listDecorator);
+                break;
+            case GRID:
+                recyclerView.addItemDecoration(gridDecorator);
+                break;
+            case CAROUSEL:
+                carouselSnapHelper.attachToRecyclerView(recyclerView);
+                break;
+
+        }
     }
 
     @Override
@@ -100,12 +127,19 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
     }
 
     private void changeLayout(DisplayMode displayMode) {
+
+        //update the display mode in adapter
+        galleryRecyclerViewAdapter.setDisplayMode(displayMode);
+
+        //set recycler view decorator according to display mode
+        setDecorator(displayMode);
+
         switch (displayMode) {
             case LIST:
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 break;
             case GRID:
-                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 break;
             case CAROUSEL:
                 recyclerView.setLayoutManager(new CarouselLayoutManager(getContext(), CarouselLayoutManager.HORIZONTAL, false));
@@ -115,16 +149,17 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
     }
 
     @Override
-    public void showMsg(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showData(TMResponse tmResponse) {
         compatibilityQuestions.clear();
         compatibilityQuestions.addAll(tmResponse.getCompatibilityQuestions());
         galleryRecyclerViewAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void showError(Throwable e) {
+        e.printStackTrace();
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
 }

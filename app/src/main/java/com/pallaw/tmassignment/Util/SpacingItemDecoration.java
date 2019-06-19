@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Pallaw Pathak on 2019-06-18. - https://www.linkedin.com/in/pallaw-pathak-a6a324a1/
  */
-public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private int spanCount;
     private int spacing;
     private boolean includeEdge;
 
-    public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+    public SpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
         this.spanCount = spanCount;
         this.spacing = spacing;
         this.includeEdge = includeEdge;

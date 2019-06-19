@@ -9,9 +9,9 @@ public interface GalleryContract {
 
     interface View {
 
-        void showMsg(String msg);
-
         void showData(TMResponse tmResponse);
+
+        void showError(Throwable e);
     }
 
     interface Presenter {

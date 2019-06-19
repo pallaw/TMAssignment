@@ -32,8 +32,7 @@ public class CarouselLayoutManager extends LinearLayoutManager {
             float s1 = 1.f - mShrinkAmount;
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                float childMidpoint =
-                        (getDecoratedBottom(child) + getDecoratedTop(child)) / 2.f;
+                float childMidpoint = (getDecoratedBottom(child) + getDecoratedTop(child)) / 2.f;
                 float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
                 float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
                 child.setScaleX(scale);
@@ -58,8 +57,7 @@ public class CarouselLayoutManager extends LinearLayoutManager {
             float s1 = 1.f - mShrinkAmount;
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                float childMidpoint =
-                        (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.f;
+                float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.f;
                 float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
                 float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
                 child.setScaleX(scale);

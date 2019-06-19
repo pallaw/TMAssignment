@@ -23,8 +23,6 @@ public class GalleryPresenter implements GalleryContract.Presenter {
 
     @Override
     public void onDownloadData() {
-        view.showMsg("Clicked");
-
         Observable<TMResponse> tmResponse = dataManager.getApiService().getTMResponse();
         tmResponse.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -41,7 +39,7 @@ public class GalleryPresenter implements GalleryContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        view.showError(e);
                     }
 
                     @Override
